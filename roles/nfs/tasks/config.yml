@@ -1,0 +1,29 @@
+---
+- name: config server
+  vars:
+    net_mask: "{{hostvars[inventory_hostname]['ansible_default_ipv4']['network']+'/'+hostvars[inventory_hostname]['ansible_default_ipv4']['netmask']}}"
+  copy:
+    content: >
+      {{ shared_path }} {{ net_mask|ipaddr('net') }}(rw,insecure,no_root_squash,sync)
+    dest: "{{ nfs_exports }}"
+  delegate_to: "{{ groups.server.0 }}"
+
+- name: restart rpcbind and nfs
+  service:
+    name: "{{ item }}"
+    state: restarted
+  with_items:
+    - rpcbind
+    - nfs
+  notify:
+    - reload nfs
+
+- name: delete mount point
+  shell: sed -i '/{{groups["server"][0] }}/d' /etc/fstab
+  when:
+    - "{{ inventory_hostname in groups['client'] }}"
+
+- name: config client
+  shell: "echo '{{ groups['server'][0] }}:{{ shared_path }} {{ mount_path }} nfs defaults 0 0' >> /etc/fstab;mount -a"
+  when:
+    - "{{ inventory_hostname in groups['client'] }}"

@@ -1,0 +1,11 @@
+---
+- name: restart rpcbind and nfs
+  service:
+    name: "{{ item }}"
+    state: restarted
+  with_items:
+    - rpcbind
+    - nfs
+
+- name: reload nfs
+  command: 'exportfs -ra'

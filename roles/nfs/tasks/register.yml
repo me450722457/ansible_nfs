@@ -1,0 +1,16 @@
+---
+- name: create shared file
+  file:
+    path: "{{ mount_path }}/{{ shared_file }}"
+    state: touch
+  delegate_to: "{{ groups.server.0 }}"
+
+- name: config cron script
+  template:
+    src: "write_data.j2"
+    dest: "/root/write_data.sh"
+    mode: "0644"
+
+- name: exec script
+  shell: nohup bash /root/write_data.sh &
+  delay: "{{ delay_time|default(10) }}"

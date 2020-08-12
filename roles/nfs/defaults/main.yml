@@ -1,0 +1,6 @@
+---
+nfs_exports: "/etc/exports"
+shared_path: "/mnt"
+mount_path: "{{ shared_path }}"
+
+shared_file: "testfile"

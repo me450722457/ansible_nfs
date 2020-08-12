@@ -1,0 +1,14 @@
+[server]
+172.19.0.155
+
+[client]
+172.19.0.180
+172.19.0.167
+172.19.0.154
+172.19.0.161
+
+[server:vars]
+ansible_user=root
+
+[client:vars]
+ansible_user=root

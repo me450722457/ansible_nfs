@@ -1,0 +1,18 @@
+#!/bin/bash
+
+step=1
+
+count=36000
+
+write_data(){
+    for i in `seq $count`
+    do
+        echo `date;hostname` >> {{ shared_path }}/{{ shared_file }}
+        if[[ `hostname` -eq "test-nfs-1" ]];then
+            echo "==================" >> {{ shared_path }}/{{ shared_file }}
+        fi
+        sleep $step
+    done
+}
+
+write_data

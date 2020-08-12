@@ -1,0 +1,12 @@
+---
+- import_tasks: install.yml
+  notify:
+    - restart rpcbind and nfs
+
+- import_tasks: config.yml
+
+- name: Flush handlers
+  meta: flush_handlers
+
+- import_tasks: register.yml
+  tags: script

@@ -1,0 +1,7 @@
+---
+- hosts: all
+  gather_facts: true
+  tasks:
+    - name: install nfs
+      import_role: 
+        name: nfs
